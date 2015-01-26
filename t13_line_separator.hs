@@ -1,7 +1,11 @@
-isSentinel :: Char -> Bool
+lineSplit :: String -> [String]
+lineSplit cs = let (pre,rest) = break isSentinel cs
+{- lineSplit cs = let (pre:rest:[]) = break isSentinel cs -}
+                in pre: case rest of
+                    (rest:"\n")     -> lineSplit rest
+                    (rest:"\r")     -> lineSplit rest
+                    (rest:"\r\n")   -> lineSplit rest
+                    _               -> []
+
 isSentinel x = x == '\n' || x == '\r'
 
-lineSeparator :: String -> [String]
-lineSeparator (x:xs) = if isSentinel x
-                            then [x] ++ [lineSeparator xs]
-                            else [x] ++ (lineSeparator xs)
