@@ -15,4 +15,17 @@ main = mainWith myFunction
             _ -> putStrLn "error: exactly two arguments needed"
 
         -- replace "id" with the name of our function below
-        myFunction = id
+        myFunction = fixLines
+
+lineSplit :: String -> [String]
+lineSplit cs = let (pre,rest) = break isSentinel cs
+                in pre: case rest of
+                             ('\r':'\n':rest)   -> lineSplit rest
+                             ('\n':rest)     -> lineSplit rest
+                             ('\r':rest)     -> lineSplit rest
+                             _               -> []
+
+isSentinel x = x == '\n' || x == '\r'
+
+fixLines :: String -> String
+fixLines input = unlines (lineSplit input)

@@ -6,5 +6,4 @@ lineSplit cs = let (pre,rest) = break isSentinel cs
                              ('\r':rest)     -> lineSplit rest
                              _               -> []
 
-
 isSentinel x = x == '\n' || x == '\r'
