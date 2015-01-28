@@ -1,4 +1,3 @@
-lineSplit cs = let (pre:rest:[]) = break isSentinel cs 
 lineSplit :: String -> [String]
 lineSplit cs = let (pre,rest) = break isSentinel cs
                 in pre: case rest of
@@ -7,5 +6,5 @@ lineSplit cs = let (pre,rest) = break isSentinel cs
                              ('\r':rest)     -> lineSplit rest
                              _               -> []
 
-isSentinel x = x == '\n' || x == '\r'
 
+isSentinel x = x == '\n' || x == '\r'
