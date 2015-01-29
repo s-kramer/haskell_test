@@ -10,3 +10,4 @@ myNull _ = False
 
 myHead [] = 0
 myHead (x:xs) = x
+
