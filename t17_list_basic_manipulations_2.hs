@@ -284,5 +284,49 @@ foldl f s [1,2,3,4]
 -}
 
 myCycleFold :: [a] -> [a]
-myCycleFold xs = foldl step [] xs
-  where step x ys 
+myCycleFold [] = error "Empty list!"
+myCycleFold xs = foldr step [] xs
+  where 
+      step _ ys = xs ++ ys
+
+{-|
+foldr step [] [1,2,3] 
+== 1 step (foldr step [] [2,3])
+== 1 step (2 step (foldr step [] [3]))
+== 1 step (2 step (3 step (foldr step [] [])))
+== 1 step (2 step (3 step []))
+== 1 step (2 step (step 3 []))
+== 1 step (step 2 ([1,2,3] ++ []))
+== 1 step (step 2 [1,2,3])
+== 1 step ([1,2,3] ++ [1,2,3])
+== 1 step ([1,2,3,1,2,3])
+== step 1 ([1,2,3,1,2,3])
+== step 1 [1,2,3,1,2,3]
+== [1,2,3,1,2,3] ++ [1,2,3]
+== [1,2,3,1,2,3,1,2,3]
+-}
+
+myWordsFold :: String -> [String]
+myWordsFold = foldr step []
+  where 
+      step :: Char -> [String] -> [String]
+      step x [] = [[x]] 
+      -- step x ys
+      step x (y:ys)
+        | isSpace x = [] : (y:ys)
+        | otherwise = (x : y) : ys 
+        -- | otherwise = (x:head ys) : tail ys 
+        -- 
+myUnlinesFold :: [String] -> String
+myUnlinesFold = foldl step [] 
+  where 
+      step :: String -> String -> String
+      step x ys = x ++ "\n" ++ ys
+
+myTails :: [a] -> [[a]]
+myTails xs@(_:xs') = xs : myTails xs'
+myTails _ = []
+
+myTails2 :: [a] -> [[a]]
+myTails2 xs@(_:xs') = xs : myTails2 xs'
+myTails2 _ = [[]]
