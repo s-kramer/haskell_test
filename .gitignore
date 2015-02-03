@@ -2,3 +2,4 @@ t14_fixLines
 *.o
 *.hi
 SimpleJson/sample
+SimpleJson/simple

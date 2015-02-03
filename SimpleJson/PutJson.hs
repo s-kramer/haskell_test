@@ -1,7 +1,7 @@
 module PutJson where
 
-import SimpleJson
 import Data.List (intercalate)
+import SimpleJson
 
 renderJValue :: JValue -> String
 
@@ -15,3 +15,13 @@ renderJValue (JArray a) = "[" ++ value a ++ "]"
   where 
       value [] = ""
       value xs = intercalate ", " (map renderJValue xs)
+
+renderJValue (JObject o) = "{" ++  pairs o ++ "}"
+  where 
+        pairs :: [(String, JValue)] -> String 
+        pairs [] = ""
+        pairs ps = intercalate ", " (map renderPair ps)
+        renderPair (k,v) = show k ++ ": " ++ renderJValue v
+
+putJValue :: JValue -> IO()
+putJValue v = putStrLn (renderJValue v)
