@@ -12,4 +12,9 @@ double d = undefined
 string :: String -> Doc
 string s = undefined
 
+(<>) :: Doc -> Doc -> Doc
+a <> b :: undefined
+
+char :: Char -> Doc
+char c = undefined
 
