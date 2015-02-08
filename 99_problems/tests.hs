@@ -50,4 +50,4 @@ nums = [1..10]
 chars = ['a'..'z']
 vals = zip nums chars
 
-
+data Car = Car { company :: String, model :: String, year :: Int} deriving Show

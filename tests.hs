@@ -40,4 +40,4 @@ takeUntilNot pred (x:xs)
   | otherwise = []
 
 oddSquareSum = sum (takeWhile (<10000) (filter odd (map (^2) [1..])))
-oddSquareSum2 = sum . takeWhile (<10000) . filter odd . map (^2) [1..]
+oddSquareSum2 = sum . takeWhile (<10000) . filter odd $ map (^2) [1..]
