@@ -38,3 +38,4 @@ quicksort' (x:xs) =
     let prePivot = quicksort' [a | a <- xs, a < x]
         postPivot = quicksort' [a | a <- xs, a >= x]
     in prePivot ++ [x] ++ postPivot
+
