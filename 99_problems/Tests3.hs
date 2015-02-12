@@ -59,3 +59,31 @@ insertNode n (Node node bt1 bt2)
   | n < node = Node node (insertNode n bt1) bt2
   | n > node = Node node bt1 (insertNode n bt2)
 
+createTree :: (Ord a) => [a] -> BinTree a
+createTree = foldr nodeInserter EmptyNode 
+  where 
+      -- nodeInserter = insertNode
+      nodeInserter y EmptyNode = singleton y
+      nodeInserter y (Node x left right)
+        | y == x = Node y left right
+        | y > x = Node x left (nodeInserter y right)
+        | y < x = Node x (nodeInserter y left) right
+
+data TrafficLight = Red | Green | Yellow
+
+-- class Equal a where
+--     (===) :: a -> a -> Bool
+--     (/==) :: a -> a -> Bool
+--     a === b = not (a /== b)
+--     a /== b = not (a === b)
+    
+instance Eq TrafficLight where
+    Red == Red = True
+    Green == Green = True
+    Yellow == Yellow = True
+    _ == _ = False
+
+instance Show TrafficLight where
+    show Red = "Red light!"
+    show Green = "Green light!"
+    show Yellow = "Yellow light!"
