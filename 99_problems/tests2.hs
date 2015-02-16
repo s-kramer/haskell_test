@@ -51,3 +51,4 @@ vals = zip nums chars
 
 data Car = Car { company :: String, model :: String, year :: Int} deriving Show
 
+
