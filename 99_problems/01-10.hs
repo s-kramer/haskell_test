@@ -53,3 +53,23 @@ isPalyndrome [x] = True
 isPalyndrome (x:xs)
   | x == last xs = isPalyndrome $ init xs
   | otherwise = False
+
+--7
+data NestedList a = Elem a | List [NestedList a]
+  deriving (Show)
+  
+flatten :: NestedList a -> [a]
+flatten (Elem n) = [n]
+flatten (List (x:xs)) = flatten x ++ flatten (List xs)
+flatten (List []) = []
+
+--8
+compress :: [a] -> [a]
+compress = foldr (\x acc -> x:acc if x != head acc else acc) [] 
+
+compress :: (Eq a) => [a] -> [a]
+compress [] = []
+compress (x:xs)
+  | xs == [] = [x]
+  | x == head xs = compress xs
+  | otherwise = x:(compress xs)
