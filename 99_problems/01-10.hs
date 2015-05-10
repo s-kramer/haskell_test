@@ -146,20 +146,61 @@ encode''' $ pack l2
  -- 11 Problem 11
  -- (*) Modified run-length encoding.
  -- Modify the result of problem 10 in such a way that if an element has no duplicates it is simply copied into the result list. Only elements with duplicates are transferred as (N E) lists. 
- 
- encode_mod :: [[a]] -> [(Int, a)]
- encode_mod = filter (\(count, _) -> count > 1) . encode 
+ --
+data Counted a = Single a | Multi (Int, a)
+  deriving Show
+
+encode_mod :: (Eq a) => [a] -> [Counted a]
+encode_mod = map (\ys -> if length ys == 1 then Single $ head ys else Multi (length ys, head ys) ) . pack
+
+encode_mod' :: (Eq a) => [a] -> [Counted a]
+encode_mod' = map singleTransformation . Data.List.group
+  where 
+      singleTransformation [x] = Single x
+      singleTransformation acc@(x:xs) = Multi (length acc, x)
 
 l3 = [0,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3]
+encode_mod l3
+encode_mod' l3
 
- encode_mod $ pack l3
+-- Filter single elemnets out
+-- encode_mod :: [[a]] -> [(Int, a)] 
+-- encode_mod = filter (\(count, _) -> count > 1) . encode  
 
-encode_mod' :: [[a]] -> [(Int, a)]
-encode_mod' = foldr (\x@(num, val) acc -> if num > 1 then x:acc else acc) [] . encode
+ -- encode_mod $ pack l3 
 
-encode_mod' $ pack l3
+-- encode_mod' :: [[a]] -> [(Int, a)] 
+-- encode_mod' = foldr (\x@(num, val) acc -> if num > 1 then x:acc else acc) [] . encode 
 
-encode_mod'' :: [[a]] -> [(Int, a)]
-encode_mod'' xs = let encoded = encode xs in [x | x@(num, val) <- encoded , num > 1] 
+-- encode_mod' $ pack l3 
 
-encode_mod'' $ pack l3
+-- encode_mod'' :: [[a]] -> [(Int, a)] 
+-- encode_mod'' xs = let encoded = encode xs in [x | x@(num, val) <- encoded , num > 1]  
+
+-- encode_mod'' $ pack l3 
+
+-- 2 Problem 12
+-- (**) Decode a run-length encoded list.
+-- Given a run-length code list generated as specified in problem 11. Construct its uncompressed version. 
+decode :: (Eq a) => [Counted a] -> [a]
+decode = concat . map singleDecode 
+  where 
+      singleDecode (Single x) = [x]
+      singleDecode (Multi (n, x) ) = replicate n x
+
+l4 = [Single 0,Multi (3,1),Multi (6,2),Multi (10,3)]
+decode l4
+
+decode' :: (Eq a) => [Counted a] -> [a]
+decode' = reverse . foldl singleDecode []
+  where 
+      singleDecode acc (Single x) = x:acc
+      singleDecode acc (Multi (n, x)) = replicate n x ++ acc
+
+decode'' :: (Eq a) => [Counted a] -> [a]
+decode'' = foldr singleDecode []
+  where 
+      singleDecode (Single x) acc = x:acc
+      singleDecode (Multi (n, x)) acc = replicate n x ++ acc
+
+decode'' l4
