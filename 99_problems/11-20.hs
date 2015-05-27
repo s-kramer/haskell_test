@@ -71,5 +71,45 @@ dropN 3 [1..20]
 dropN' 3 [1..20]
 
 dropN'' :: Int -> [a] -> [a]
-dropN'' n xs = map snd . filter (\x -> fst x /= n) $ zip [1..] xs
-todo: other solutions
+dropN'' n xs = map snd . filter (\x -> fst x `mod` n /= 0) $ zip [1..] xs
+
+dropN''' :: Int -> [a] -> [a]
+dropN''' n xs = map snd . filter ((0/=) . (`mod` n) . fst) $ zip [1..] xs
+
+
+dropN'' 3 [1..20]
+dropN''' 3 [1..20]
+
+-- 7 Problem 17
+-- (*) Split a list into two parts; the length of the first part is given.
+-- Do not use any predefined predicates. 
+mapTuple ::  (a -> b) -> (a, a) -> (b, b)
+mapTuple f (x1, x2) = (f x1, f x2)
+
+split' :: Int -> [a] -> ([a], [a])
+split' n xs = mapTuple reverse $ foldl (singleSplit) ([], []) xs
+  where 
+      singleSplit (xs, ys) x 
+        | length xs < n = ( (x:xs), ys)
+        | otherwise = ( xs, (x:ys) )
+
+split' 5 [1..20]
+todo: other solutions?
+
+
+-- 8 Problem 18 
+-- (**) Extract a slice from a list. 
+-- Given two indices, i and k, the slice is the list containing the elements between the i'th and k'th element of the original list (both limits included). Start counting the elements with 1.  
+
+slice' :: [a] -> Int -> Int -> [a]
+slice' xs s e = map (snd) . filter (\(n, x) -> n >= s && n <= e) $ zip [1..] xs
+
+slice'' :: [a] -> Int -> Int -> [a]
+slice'' xs s e = drop (s-1) $ take first_part xs
+  where first_part = length(xs) - s - 1
+
+l3 = [0,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3]  
+slice' l3 4 11
+word = "abcdefghijk"
+slice' word 3 7
+slice'' word 3 7
