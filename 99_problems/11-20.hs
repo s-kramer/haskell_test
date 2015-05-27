@@ -113,3 +113,32 @@ slice' l3 4 11
 word = "abcdefghijk"
 slice' word 3 7
 slice'' word 3 7
+
+-- 9 Problem 19
+-- (**) Rotate a list N places to the left.
+-- Hint: Use the predefined functions length and (++). 
+
+rotate' :: Int -> [a] -> [a]
+rotate' n xs 
+  |  n >= 0 = helper n
+  | otherwise = helper $ length xs + n
+    where helper n = let (first, second) = splitAt n xs in second ++ first
+
+rotate'' :: Int -> [a] -> [a]
+rotate'' n xs = take len . drop (len + n) $ cycle xs
+  where len = length xs
+
+l3
+rotate' 3 l3
+rotate' 0 l3
+rotate' (-4) l3
+rotate' 3 ['a'..'h']
+rotate' (-2) ['a'..'h']
+rotate'' (-2) ['a'..'h']
+rotate'' 3 ['a'..'h']
+
+-- 10 Problem 20
+-- (*) Remove the K'th element from a list. 
+ 
+ remove_at :: Int -> [a] -> [a]
+ remove_at n xs =
